@@ -39,9 +39,13 @@ app.post("/", function (req, res, next) {
       },
     ],
   };
+
+  //dotenv hidden keys
   const apiKey = process.env.API_KEY;
   const server = process.env.SERVER;
   const listID = process.env.LIST_ID
+
+  
   const jsonData = JSON.stringify(data);
   const url = `https://${server}.api.mailchimp.com/3.0/lists/${listID}`;
   const options = {
