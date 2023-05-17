@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const path = require("path");
 const https = require("https");
+require('dotenv').config()
 
 const app = express();
 const port = 3000;
@@ -38,16 +39,24 @@ app.post("/", function (req, res, next) {
       },
     ],
   };
-
+  const apiKey = process.env.API_KEY;
+  const server = process.env.SERVER;
+  const listID = process.env.LIST_ID
   const jsonData = JSON.stringify(data);
-  const url = "https://us14.api.mailchimp.com/3.0/lists/d44ce8defa";
+  const url = `https://${server}.api.mailchimp.com/3.0/lists/${listID}`;
   const options = {
     method:"POST",
-    auth: "anton1:e05de41138a84638d97f4d1f091e39b6-us14"
+    auth: `anton1:${apiKey}`
   }
   const request = https.request(url, options, function (response) {
     response.on("data", function (data) { 
-        console.log(JSON.parse(data));
+        //console.log(JSON.parse(data));
+      if(response.statusCode === 200){
+        res.sendFile(__dirname+"/success.html");
+      }
+      else{
+        res.sendFile(__dirname+"/failure.html");
+      }
      })
   });
 
@@ -60,8 +69,3 @@ app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
 
-//API Key
-// e05de41138a84638d97f4d1f091e39b6-us14
-
-//List ID
-// d44ce8defa
