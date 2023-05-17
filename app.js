@@ -6,7 +6,7 @@ const https = require("https");
 require("dotenv").config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 // for parsing application/json
 app.use(bodyParser.json());
@@ -70,6 +70,6 @@ app.post("/", function (req, res, next) {
   request.end();
 });
 
-app.listen(port, () => {
+app.listen(port || 3000, () => {
   console.log(`App listening on port ${port}`);
 });
